@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andrea's 30-Day Workout Plan</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Andrea's 30-Day Workout Plan</h1>
+    <p>Wednesday, Nov 11 – Thursday, Dec 10 · Cycling + strength, building up each week</p>
+  </header>
+
+  <section class="progress" aria-label="Progress">
+    <div class="stat"><b id="doneCount">0 / 30</b><span>workouts done</span></div>
+    <div class="stat"><b id="doneMin">0</b><span>minutes done</span></div>
+    <div class="bar" aria-hidden="true"><i id="barFill"></i></div>
+  </section>
+
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <div class="legend">
+    <span data-kind="strength">Strength</span>
+    <span data-kind="ride">Cycling</span>
+    <span data-kind="rest">Rest</span>
+  </div>
+  <main class="days" id="days"></main>
+
+  <dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg" id="dlgBody"></div></dialog>
+
+  <footer>
+    Click a day to see the full workout, then mark it done. Your progress is saved in this browser.
+    If a week feels too hard, repeat it before moving up.
+  </footer>
+</div>
+
+<script>
+const PLAN = {
+ "types": {
+  "Strength A": {
+   "equip": "Exercise mat (or towel), water",
+   "videos": [
+    [
+     "Squats",
+     "https://www.youtube.com/results?search_query=how+to+do+a+bodyweight+squat+proper+form+beginner"
+    ],
+    [
+     "Push-ups (incline OK)",
+     "https://www.youtube.com/results?search_query=how+to+do+incline+push+ups+beginner+form"
+    ],
+    [
+     "Glute bridges",
+     "https://www.youtube.com/results?search_query=how+to+do+a+glute+bridge+proper+form"
+    ],
+    [
+     "Plank",
+     "https://www.youtube.com/results?search_query=how+to+do+a+plank+proper+form+beginner"
+    ]
+   ],
+   "kind": "strength"
+  },
+  "Strength B": {
+   "equip": "Pair of dumbbells (or a backpack with books), sturdy step or bottom stair, exercise mat",
+   "videos": [
+    [
+     "Lunges",
+     "https://www.youtube.com/results?search_query=how+to+do+a+lunge+proper+form+beginner"
+    ],
+    [
+     "Rows",
+     "https://www.youtube.com/results?search_query=how+to+do+dumbbell+bent+over+row+form+beginner"
+    ],
+    [
+     "Step-ups",
+     "https://www.youtube.com/results?search_query=how+to+do+step+ups+proper+form"
+    ],
+    [
+     "Dead bugs",
+     "https://www.youtube.com/results?search_query=how+to+do+dead+bug+exercise+proper+form"
+    ]
+   ],
+   "kind": "strength"
+  },
+  "Cycling – steady": {
+   "equip": "Bike, helmet, water bottle",
+   "videos": [
+    [
+     "Zone 2 (easy) riding",
+     "https://www.youtube.com/results?search_query=zone+2+cycling+explained+beginner"
+    ]
+   ],
+   "kind": "ride"
+  },
+  "Cycling – intervals": {
+   "equip": "Bike, helmet, water bottle, watch or phone timer",
+   "videos": [
+    [
+     "Interval ride",
+     "https://www.youtube.com/results?search_query=beginner+cycling+interval+workout+how+to"
+    ]
+   ],
+   "kind": "ride"
+  },
+  "Long ride": {
+   "equip": "Bike, helmet, 2 water bottles, snack, phone, spare tube/pump",
+   "videos": [
+    [
+     "Long ride tips",
+     "https://www.youtube.com/results?search_query=beginner+long+bike+ride+tips+pacing"
+    ]
+   ],
+   "kind": "ride"
+  },
+  "Rest / active recovery": {
+   "equip": "Walking shoes, exercise mat or towel",
+   "videos": [
+    [
+     "Stretching routine",
+     "https://www.youtube.com/results?search_query=10+minute+full+body+stretching+routine+beginner"
+    ]
+   ],
+   "kind": "rest"
+  }
+ },
+ "days": [
+  {
+   "day": 1,
+   "date": "2026-11-11",
+   "type": "Strength B",
+   "minutes": 25,
+   "details": "Lunges, rows (dumbbells or loaded backpack), step-ups: 2 sets of 10. Dead bugs: 3 sets of 10"
+  },
+  {
+   "day": 2,
+   "date": "2026-11-12",
+   "type": "Cycling – intervals",
+   "minutes": 30,
+   "details": "10 min easy warm-up, then 5 rounds of 1 min hard + 2 min easy, 5 min cool-down"
+  },
+  {
+   "day": 3,
+   "date": "2026-11-13",
+   "type": "Strength A",
+   "minutes": 25,
+   "details": "Squats, push-ups (incline OK), glute bridges: 2 sets of 10. Plank: 20 sec x 3"
+  },
+  {
+   "day": 4,
+   "date": "2026-11-14",
+   "type": "Long ride",
+   "minutes": 45,
+   "details": "45 min easy, steady pace"
+  },
+  {
+   "day": 5,
+   "date": "2026-11-15",
+   "type": "Rest / active recovery",
+   "minutes": 30,
+   "details": "Easy 20 min walk + 10 min stretching"
+  },
+  {
+   "day": 6,
+   "date": "2026-11-16",
+   "type": "Strength A",
+   "minutes": 25,
+   "details": "Squats, push-ups (incline OK), glute bridges: 2 sets of 10. Plank: 20 sec x 3"
+  },
+  {
+   "day": 7,
+   "date": "2026-11-17",
+   "type": "Cycling – steady",
+   "minutes": 30,
+   "details": "30 min at a pace where you can still talk"
+  },
+  {
+   "day": 8,
+   "date": "2026-11-18",
+   "type": "Strength B",
+   "minutes": 30,
+   "details": "Lunges, rows (dumbbells or loaded backpack), step-ups: 3 sets of 10. Dead bugs: 3 sets of 10"
+  },
+  {
+   "day": 9,
+   "date": "2026-11-19",
+   "type": "Cycling – intervals",
+   "minutes": 33,
+   "details": "10 min easy warm-up, then 6 rounds of 1 min hard + 2 min easy, 5 min cool-down"
+  },
+  {
+   "day": 10,
+   "date": "2026-11-20",
+   "type": "Strength A",
+   "minutes": 30,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 10. Plank: 30 sec x 3"
+  },
+  {
+   "day": 11,
+   "date": "2026-11-21",
+   "type": "Long ride",
+   "minutes": 55,
+   "details": "55 min easy, steady pace"
+  },
+  {
+   "day": 12,
+   "date": "2026-11-22",
+   "type": "Rest / active recovery",
+   "minutes": 30,
+   "details": "Easy 20 min walk + 10 min stretching"
+  },
+  {
+   "day": 13,
+   "date": "2026-11-23",
+   "type": "Strength A",
+   "minutes": 30,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 10. Plank: 30 sec x 3"
+  },
+  {
+   "day": 14,
+   "date": "2026-11-24",
+   "type": "Cycling – steady",
+   "minutes": 35,
+   "details": "35 min at a pace where you can still talk"
+  },
+  {
+   "day": 15,
+   "date": "2026-11-25",
+   "type": "Strength B",
+   "minutes": 35,
+   "details": "Lunges, rows (dumbbells or loaded backpack), step-ups: 3 sets of 12. Dead bugs: 3 sets of 10"
+  },
+  {
+   "day": 16,
+   "date": "2026-11-26",
+   "type": "Cycling – intervals",
+   "minutes": 36,
+   "details": "10 min easy warm-up, then 7 rounds of 1 min hard + 2 min easy, 5 min cool-down"
+  },
+  {
+   "day": 17,
+   "date": "2026-11-27",
+   "type": "Strength A",
+   "minutes": 35,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 12. Plank: 40 sec x 3"
+  },
+  {
+   "day": 18,
+   "date": "2026-11-28",
+   "type": "Long ride",
+   "minutes": 65,
+   "details": "65 min easy, steady pace"
+  },
+  {
+   "day": 19,
+   "date": "2026-11-29",
+   "type": "Rest / active recovery",
+   "minutes": 30,
+   "details": "Easy 20 min walk + 10 min stretching"
+  },
+  {
+   "day": 20,
+   "date": "2026-11-30",
+   "type": "Strength A",
+   "minutes": 35,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 12. Plank: 40 sec x 3"
+  },
+  {
+   "day": 21,
+   "date": "2026-12-01",
+   "type": "Cycling – steady",
+   "minutes": 40,
+   "details": "40 min at a pace where you can still talk"
+  },
+  {
+   "day": 22,
+   "date": "2026-12-02",
+   "type": "Strength B",
+   "minutes": 40,
+   "details": "Lunges, rows (dumbbells or loaded backpack), step-ups: 3 sets of 15. Dead bugs: 3 sets of 10"
+  },
+  {
+   "day": 23,
+   "date": "2026-12-03",
+   "type": "Cycling – intervals",
+   "minutes": 39,
+   "details": "10 min easy warm-up, then 8 rounds of 1 min hard + 2 min easy, 5 min cool-down"
+  },
+  {
+   "day": 24,
+   "date": "2026-12-04",
+   "type": "Strength A",
+   "minutes": 40,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 15. Plank: 45 sec x 3"
+  },
+  {
+   "day": 25,
+   "date": "2026-12-05",
+   "type": "Long ride",
+   "minutes": 75,
+   "details": "75 min easy, steady pace"
+  },
+  {
+   "day": 26,
+   "date": "2026-12-06",
+   "type": "Rest / active recovery",
+   "minutes": 30,
+   "details": "Easy 20 min walk + 10 min stretching"
+  },
+  {
+   "day": 27,
+   "date": "2026-12-07",
+   "type": "Strength A",
+   "minutes": 40,
+   "details": "Squats, push-ups (incline OK), glute bridges: 3 sets of 15. Plank: 45 sec x 3"
+  },
+  {
+   "day": 28,
+   "date": "2026-12-08",
+   "type": "Cycling – steady",
+   "minutes": 45,
+   "details": "45 min at a pace where you can still talk"
+  },
+  {
+   "day": 29,
+   "date": "2026-12-09",
+   "type": "Strength B",
+   "minutes": 40,
+   "details": "Lunges, rows (dumbbells or loaded backpack), step-ups: 3 sets of 15. Dead bugs: 3 sets of 10"
+  },
+  {
+   "day": 30,
+   "date": "2026-12-10",
+   "type": "Cycling – intervals",
+   "minutes": 39,
+   "details": "10 min easy warm-up, then 8 rounds of 1 min hard + 2 min easy, 5 min cool-down"
+  }
+ ]
+};
+
+
+const KEY = "andrea-workout-done";
+let done = {};
+try { done = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+
+const weeks = [
+  { label: "All", from: 1, to: 30 },
+  { label: "Week 1", from: 1, to: 7 },
+  { label: "Week 2", from: 8, to: 14 },
+  { label: "Week 3", from: 15, to: 21 },
+  { label: "Week 4+", from: 22, to: 30 }
+];
+let current = 0;
+
+function fmt(iso) {
+  const d = new Date(iso + "T12:00:00");
+  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+}
+
+function render() {
+  const w = weeks[current];
+  const box = document.getElementById("days");
+  box.innerHTML = "";
+  PLAN.days.filter(d => d.day >= w.from && d.day <= w.to).forEach(d => {
+    const t = PLAN.types[d.type];
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "daybtn" + (done[d.day] ? " done" : "");
+    b.dataset.kind = t.kind;
+    b.setAttribute("aria-label", `Day ${d.day}, ${fmt(d.date)}, ${d.type}${done[d.day] ? ", done" : ""}`);
+    b.innerHTML = `
+      ${done[d.day] ? '<span class="tick" aria-hidden="true">✓</span>' : ""}
+      <small>${fmt(d.date)}</small>
+      <strong>Day ${d.day}</strong>
+      <span class="type">${d.type}</span>
+      <span class="min">${d.minutes} min</span>`;
+    b.addEventListener("click", () => openDay(d.day));
+    box.appendChild(b);
+  });
+}
+
+const dlg = document.getElementById("dlg");
+function openDay(n) {
+  const d = PLAN.days[n - 1];
+  const t = PLAN.types[d.type];
+  const body = document.getElementById("dlgBody");
+  body.dataset.kind = t.kind;
+  const vids = t.videos.map(v => `<li><a href="${v[1]}" target="_blank" rel="noopener">${v[0]}</a></li>`).join("");
+  body.innerHTML = `
+    <div class="dlg-head">
+      <div><small>Day ${d.day} · ${fmt(d.date)} · ${d.minutes} min</small><h2 id="dlgTitle">${d.type}</h2></div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+    <h4>What to do</h4><p>${d.details}</p>
+    <h4>Equipment</h4><p>${t.equip}</p>
+    <h4>How-to videos</h4><ul>${vids}</ul>
+    <div class="dlg-foot">
+      <div class="nav">
+        <button data-go="${n - 1}" ${n === 1 ? "disabled" : ""}>← Prev</button>
+        <button data-go="${n + 1}" ${n === 30 ? "disabled" : ""}>Next →</button>
+      </div>
+      <button class="donebtn ${done[n] ? "is-done" : ""}">${done[n] ? "✓ Done — undo" : "Mark as done"}</button>
+    </div>`;
+  body.querySelector(".close").onclick = () => dlg.close();
+  body.querySelectorAll("[data-go]").forEach(x => x.onclick = () => openDay(+x.dataset.go));
+  body.querySelector(".donebtn").onclick = () => {
+    if (done[n]) delete done[n]; else done[n] = true;
+    save(); totals(); render(); openDay(n);
+  };
+  if (!dlg.open) dlg.showModal();
+}
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+function totals() {
+  const finished = PLAN.days.filter(d => done[d.day]);
+  const mins = finished.reduce((s, d) => s + d.minutes, 0);
+  document.getElementById("doneCount").textContent = `${finished.length} / 30`;
+  document.getElementById("doneMin").textContent = mins;
+  document.getElementById("barFill").style.width = (finished.length / 30 * 100) + "%";
+}
+
+const tabs = document.getElementById("tabs");
+weeks.forEach((w, i) => {
+  const b = document.createElement("button");
+  b.textContent = w.label;
+  b.setAttribute("role", "tab");
+  b.setAttribute("aria-selected", i === current);
+  b.onclick = () => {
+    current = i;
+    [...tabs.children].forEach((c, j) => c.setAttribute("aria-selected", j === i));
+    render();
+  };
+  tabs.appendChild(b);
+});
+
+render();
+totals();
+</script>
+<script src="extras.js"></script>
+</body>
+</html>
